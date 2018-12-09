@@ -6,13 +6,26 @@ GENERAL:
 - gzip json?
 - convert json into parquet
 - schemas?
-- 
+- out of order data
+	- when the data is final and what time to use for partitions; watermarks, windows etc.
+- lambda warehouse
+	- get today's data from json and older data from parquet? or last week from json (real-time) and archived from parquet
 
 
 - https://medium.com/@maximebeauchemin/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a
-		- staging are not transiens: has all the raw data; never delete
-		- version coputations: e.g. effective tax logic for 2018; user paramaters with effective dates?
-		- use dimension snapshots (point in time dimensions during ETL batch processing; usually latest) instead of slowly changing domensions
-		- or use nested data structures e.g. tax rate ledger with effective dates - this allows use of a single dimension record
-		- 
-		- 
+	- immutable ETLs
+	- staging are not transiens: has all the raw data; never delete
+	- version coputations: e.g. effective tax logic for 2018; user paramaters with effective dates?
+	- use dimension snapshots (point in time dimensions during ETL batch processing; usually latest) instead of slowly changing domensions
+	- or use nested data structures e.g. tax rate ledger with effective dates - this allows use of a single dimension record
+	- UNIT OF WORK - task to table AND task instance results in a table pertition!!! (see image)
+		- idempotent: just run a task to "replace" any partition (latest or historical)
+		- partitions are the smallest unit that tasks operate on
+		- avoid inter-partition dependencies e.g. live-to-date customer spending total
+	- late arriving facts - use event PROCESSING time when partitioning
+		- event time, processing time and ingestion time
+
+
+
+- https://www.youtube.com/watch?v=wEOm6aiN4ww&list=PLhr1KZpdzukdeX8mQ2qO73bg6UKQHYsHb&index=24&t=0s
+	- firehose -> s3 -> glue -> s3
