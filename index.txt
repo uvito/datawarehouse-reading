@@ -1,6 +1,18 @@
 
 
+GENERAL:
+- flow: firehose -> s3 (agregated daily) -> glue -> s3 (parquet; partitioned) -> glacier
+- create one file per minute but consolidate them every day
+- gzip json?
+- convert json into parquet
+- schemas?
+- 
+
 
 - https://medium.com/@maximebeauchemin/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a
 		- staging are not transiens: has all the raw data; never delete
+		- version coputations: e.g. effective tax logic for 2018; user paramaters with effective dates?
+		- use dimension snapshots (point in time dimensions during ETL batch processing; usually latest) instead of slowly changing domensions
+		- or use nested data structures e.g. tax rate ledger with effective dates - this allows use of a single dimension record
+		- 
 		- 
